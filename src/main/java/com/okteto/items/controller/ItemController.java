@@ -7,11 +7,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
 
 @RestController
+
 public class ItemController {
     @Autowired
     ItemRepository itemRepo;
@@ -56,7 +58,10 @@ public class ItemController {
     }
 
     @GetMapping("/")
-	public String sayHello() {
-		return "Hello World!";
-	}
+    public String sayHello() {
+        RestTemplate restTemplate = new RestTemplate();
+        String fooResourceUrl = "https://item-service-v2-ronbarabash.yotpo.okteto.dev";
+        ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
+        return response.getBody();
+    }
 }
